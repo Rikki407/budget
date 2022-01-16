@@ -4,7 +4,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 
 const BudgetsContext = createContext();
 
-export const UNCATEGORIZED_BUDGET_ID = "uncategorized";
+export const UNCATEGORIZED_BUDGET_ID = 'uncategorized';
 
 export function useBudgets() {
     return useContext(BudgetsContext);
@@ -32,11 +32,18 @@ export const BudgetsProvider = ({ children }) => {
             ];
         });
     };
-    const deleteBudget = ({ id }) =>
+    const deleteBudget = (id) => {
+        setExpenses((prevExpenses) => {
+            return prevExpenses.map((expense) => {
+                if (expense.budgetId !== id) return expense;
+                return { ...expense, budgetId: UNCATEGORIZED_BUDGET_ID };
+            });
+        });
         setBudgets((prevBudgets) =>
             prevBudgets.filter((budget) => budget.id !== id)
         );
-    const deleteExpense = ({ id }) =>
+    };
+    const deleteExpense = (id) =>
         setExpenses((prevExpenses) =>
             prevExpenses.filter((expense) => expense.id !== id)
         );
