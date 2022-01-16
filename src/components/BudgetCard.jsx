@@ -8,7 +8,14 @@ const getProgressBarVariant = (amount, max) => {
     return 'danger';
 };
 
-const BudgetCard = ({ name, amount, max, gray, onAddExpenseModalClick }) => {
+const BudgetCard = ({
+    name,
+    amount,
+    max,
+    gray,
+    onAddExpenseModalClick,
+    hideButtons,
+}) => {
     const classNames = [];
     if (amount >= max) classNames.push('bg-danger', 'bg-opacity-10');
     else if (gray) classNames.push('bg-light');
@@ -35,16 +42,20 @@ const BudgetCard = ({ name, amount, max, gray, onAddExpenseModalClick }) => {
                         now={amount}
                     />
                 )}
-                <Stack direction="horizontal" gap="2" className="mt-4">
-                    <Button
-                        variant="outline-primary"
-                        className="ms-auto"
-                        onClick={onAddExpenseModalClick}
-                    >
-                        Add Expence
-                    </Button>
-                    <Button variant="outline-secondary">View Expences</Button>
-                </Stack>
+                {!hideButtons && (
+                    <Stack direction="horizontal" gap="2" className="mt-4">
+                        <Button
+                            variant="outline-primary"
+                            className="ms-auto"
+                            onClick={onAddExpenseModalClick}
+                        >
+                            Add Expence
+                        </Button>
+                        <Button variant="outline-secondary">
+                            View Expences
+                        </Button>
+                    </Stack>
+                )}
             </Card.Body>
         </Card>
     );
