@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useBudgets } from '../context/BudgetsContext';
+import { UNCATEGORIZED_BUDGET_ID, useBudgets } from '../context/BudgetsContext';
 
 const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
     const descriptionRef = useRef();
@@ -12,7 +12,7 @@ const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
         addExpense({
             description: descriptionRef.current.value,
             amount: parseFloat(amountRef.current.value),
-            budget: budgetIdRef.current.value,
+            budgetId: budgetIdRef.current.value,
         });
         handleClose();
     };
@@ -48,6 +48,9 @@ const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
                             ref={budgetIdRef}
                             type="number"
                         >
+                            <option id={UNCATEGORIZED_BUDGET_ID}>
+                                Uncategorized
+                            </option>
                             {budgets.map((budget) => (
                                 <option key={budget.id} value={budget.id}>
                                     {budget.name}

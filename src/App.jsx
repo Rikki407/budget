@@ -3,12 +3,20 @@ import { useState } from 'react';
 import { Button, Stack } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import AddBudgetModal from './components/AddBudgetModal';
+import AddExpenseModal from './components/AddExpenseModal';
 import BudgetCard from './components/BudgetCard';
 import { useBudgets } from './context/BudgetsContext';
 
 function App() {
     const { budgets, getBudgetExpenses } = useBudgets();
     const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+    const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+    const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState();
+
+    const openAddExpenseModal = (budgetId) => {
+        setShowAddExpenseModal(true);
+        setAddExpenseModalBudgetId(budgetId);
+    };
 
     return (
         <>
@@ -21,7 +29,12 @@ function App() {
                     >
                         Add Budget
                     </Button>
-                    <Button variant="outline-primary">Add Expence</Button>
+                    <Button
+                        variant="outline-primary"
+                        onClick={openAddExpenseModal}
+                    >
+                        Add Expence
+                    </Button>
                 </Stack>
                 <div
                     style={{
@@ -34,7 +47,7 @@ function App() {
                 >
                     {budgets.map((budget) => {
                         const amount = getBudgetExpenses(budget.id).reduce(
-                            (total, expense) => total + expense,
+                            (total, expense) => total + expense.amount,
                             0
                         );
                         return (
@@ -43,6 +56,9 @@ function App() {
                                 name={budget.name}
                                 amount={amount}
                                 max={budget.max}
+                                onAddExpenseModalClick={() =>
+                                    openAddExpenseModal(budget.id)
+                                }
                             />
                         );
                     })}
@@ -51,6 +67,11 @@ function App() {
             <AddBudgetModal
                 show={showAddBudgetModal}
                 handleClose={() => setShowAddBudgetModal(false)}
+            />
+            <AddExpenseModal
+                show={showAddExpenseModal}
+                defaultBudgetId={addExpenseModalBudgetId}
+                handleClose={() => setShowAddExpenseModal(false)}
             />
         </>
     );
