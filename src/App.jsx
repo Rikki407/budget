@@ -43,7 +43,7 @@ function App() {
                                 name={budget.name}
                                 amount={amount}
                                 max={budget.max}
-                            ></BudgetCard>
+                            />
                         );
                     })}
                 </div>

@@ -10,7 +10,7 @@ const AddBudgetModal = ({ show, handleClose }) => {
         e.preventDefault();
         addBudget({
             name: nameRef.current.value,
-            max: maxRef.current.value,
+            max: parseFloat(maxRef.current.value),
         });
         handleClose();
     };
